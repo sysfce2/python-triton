@@ -258,6 +258,7 @@ module attributes {"ttg.num-warps" = 1 : i32} {
   }
 }
 
+
 // -----
 
 tt.func @warp_specialize_no_holder() {
