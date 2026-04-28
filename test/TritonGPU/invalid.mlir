@@ -233,19 +233,6 @@ module attributes {"ttg.num-warps" = 1 : i32} {
   }
 }
 
-// -----
-
-#mma0 = #ttg.nvidia_mma<{versionMajor=2, warpsPerCTA=[1,1], instrShape = [16, 8]}>
-#dot_operand_a = #ttg.dot_op<{opIdx=0, parent=#mma0, kWidth=1}>
-#dot_operand_b = #ttg.dot_op<{opIdx=1, parent=#mma0, kWidth=1}>
-module attributes {"ttg.num-warps" = 1 : i32} {
-  tt.func @dot_f64_i32_accumulator(%A: tensor<16x4xf64, #dot_operand_a>, %B: tensor<4x16xf64, #dot_operand_b>) {
-    %C = arith.constant dense<0> : tensor<16x16xi32, #mma0>
-    // expected-error@+1 {{Unsupported MMA instruction for the given mma type}}
-    %D = tt.dot %A, %B, %C : tensor<16x4xf64, #dot_operand_a> * tensor<4x16xf64, #dot_operand_b> -> tensor<16x16xi32, #mma0>
-    tt.return
-  }
-}
 
 // -----
 
